@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  email String @unique
+  hash String
+  hashedRt String?
+
+  firstName String?
+  lastName String?
+
+  @@map("users")
+  folders Folder[]
+}
+
+model Folder {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("folders")
+  decks Deck[]
+}
+
+model Deck {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  folderId Int
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@map("decks")
+  cards Card[]
+}
+
+model Card {
+  id Int @id @default(autoincrement())
+
+  front String
+  back String
+
+  rating Int @default(0)
+
+  deckId Int
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@map("cards")
+}

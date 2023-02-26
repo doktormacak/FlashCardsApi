@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -29,6 +30,9 @@ model Folder {
 
   name String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   userId Int
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,6 +44,9 @@ model Deck {
   id Int @id @default(autoincrement())
 
   name String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   folderId Int
   folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
@@ -53,6 +60,9 @@ model Card {
 
   front String
   back String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   rating Int @default(0)
 

@@ -23,6 +23,18 @@ export class FolderService {
     });
   }
 
+  async searchFoldersByName(userId: number, query: string) {
+    return await this.prisma.folder.findMany({
+      where: {
+        userId,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
+
   async createFolder(userId: number, dto: CreateFolderDto) {
     const folder = await this.prisma.folder.create({
       data: {

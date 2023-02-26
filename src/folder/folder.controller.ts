@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Query,
   ParseIntPipe,
   Patch,
   Post,
@@ -17,8 +18,15 @@ import { FolderService } from './folder.service';
 export class FolderController {
   constructor(private folderService: FolderService) {}
   @Get()
-  getFolders(@GetCurrentUserId() userId: number) {
-    return this.folderService.getFolders(userId);
+  getFolders(
+    @GetCurrentUserId() userId: number,
+    @Query('search') query: string,
+  ) {
+    if (!query) {
+      return this.folderService.getFolders(userId);
+    } else {
+      return this.folderService.searchFoldersByName(userId, query);
+    }
   }
 
   @Get(':id')

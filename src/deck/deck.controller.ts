@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Query,
   ParseIntPipe,
   Patch,
   Post,
@@ -16,8 +17,15 @@ export class DeckController {
   constructor(private deckService: DeckService) {}
 
   @Get()
-  getDecks(@Param('folderId', ParseIntPipe) folderId: number) {
-    return this.deckService.getDecks(folderId);
+  getDecks(
+    @Param('folderId', ParseIntPipe) folderId: number,
+    @Query('search') query: string,
+  ) {
+    if (!query) {
+      return this.deckService.getDecks(folderId);
+    } else {
+      return this.deckService.searchDeckByName(folderId, query);
+    }
   }
 
   @Get(':id')

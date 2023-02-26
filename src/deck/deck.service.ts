@@ -23,6 +23,18 @@ export class DeckService {
     });
   }
 
+  async searchDeckByName(folderId: number, query: string) {
+    return await this.prisma.deck.findMany({
+      where: {
+        folderId,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
+
   async createDeck(folderId: number, dto: CreateDeckDto) {
     const deck = await this.prisma.deck.create({
       data: {

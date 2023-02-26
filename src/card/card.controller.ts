@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Query,
   ParseIntPipe,
   Patch,
   Post,
@@ -16,8 +17,15 @@ export class CardController {
   constructor(private cardService: CardService) {}
 
   @Get()
-  getCards(@Param('deckId', ParseIntPipe) deckId: number) {
-    return this.cardService.getCards(deckId);
+  getCards(
+    @Param('deckId', ParseIntPipe) deckId: number,
+    @Query('search') query: string,
+  ) {
+    if (!query) {
+      return this.cardService.getCards(deckId);
+    } else {
+      return this.cardService.searchCardsByName(deckId, query);
+    }
   }
 
   @Get(':id')

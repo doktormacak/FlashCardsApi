@@ -23,6 +23,18 @@ export class CardService {
     });
   }
 
+  async searchCardsByName(deckId: number, query: string) {
+    return await this.prisma.card.findMany({
+      where: {
+        deckId,
+        front: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
+
   async createCard(deckId: number, dto: CreateCardDto) {
     return await this.prisma.card.create({
       data: {

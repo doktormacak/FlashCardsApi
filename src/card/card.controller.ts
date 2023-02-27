@@ -8,11 +8,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { CardService } from './card.service';
 import { CreateCardDto, EditCardDto } from './dto';
 
 @Controller('folders/:folderId/decks/:deckId/card')
+@UseInterceptors(TransformInterceptor)
 export class CardController {
   constructor(private cardService: CardService) {}
 

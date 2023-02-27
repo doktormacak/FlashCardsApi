@@ -8,13 +8,16 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GetCurrentUserId } from 'src/auth/decorator';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 
 import { CreateFolderDto, EditFolderDto } from './dto';
 import { FolderService } from './folder.service';
 
 @Controller('folders')
+@UseInterceptors(TransformInterceptor)
 export class FolderController {
   constructor(private folderService: FolderService) {}
   @Get()
